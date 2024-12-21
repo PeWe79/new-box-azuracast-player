@@ -123,12 +123,11 @@ function processData() {
   const audioSource = new Audio(musicData[currentMusic].streamUrl);
 
   const changePlayerInfo = function () {
-    playerBanner.setAttribute("alt", `${musicData[currentMusic].np.title} Album Poster`);
-    playerTitle.textContent = musicData[currentMusic].np.title;
-    playerAlbum.textContent = musicData[currentMusic].np.album;
-    playerArtist.textContent = musicData[currentMusic].np.artist;
+    // playerBanner.setAttribute("alt", `${musicData[currentMusic].np.title} Album Poster`);
+    // playerTitle.textContent = musicData[currentMusic].np.title;
+    // playerAlbum.textContent = musicData[currentMusic].np.album;
+    // playerArtist.textContent = musicData[currentMusic].np.artist;
     getDataSelected(musicData[currentMusic].api);
-
     audioSource.src = musicData[currentMusic].streamUrl;
     playMusic();
   }
@@ -382,6 +381,10 @@ function processData() {
       playerBanner.src = n.art;
       document.getElementById("artwork").src = n.art;
       document.body.style.backgroundImage = `url(${n.art})`;
+
+      playerArtist.textContent = artist;
+      playerTitle.textContent = title;
+      playerAlbum.textContent = album;
 
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
