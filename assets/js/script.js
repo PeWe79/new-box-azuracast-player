@@ -363,33 +363,33 @@ function processData() {
       const T = musicData[currentMusic];
       const artist = reslt.now_playing.song.artist || T.artist;
       const title = reslt.now_playing.song.title || T.title;
-      const album = reslt.now_playing.song.album || T.album;
+      // const album = reslt.now_playing.song.album || T.album;
       const np = reslt.now_playing.song;
+
+      const n = await getCoverArt(np);
 
       // Open spotify
       const stream = "https://open.spotify.com/search/" + encodeURIComponent(artist + " - " + title);
       document.getElementById("spotify").href = stream;
 
-      playerBanner.setAttribute("alt", `${title} Album Poster`);
-      document.getElementById("title").innerHTML = title;
+      playerBanner.setAttribute("alt", `${n.title} Album Poster`);
+      document.getElementById("title").innerHTML = n.title;
       document.title = artist + " - " + title;
-      document.getElementById("album").innerHTML = album || "N/A";
-      document.getElementById("artist").innerHTML = artist;
-
-      const n = await getCoverArt(np);
+      document.getElementById("album").innerHTML = n.album || "N/A";
+      document.getElementById("artist").innerHTML = n.artist;
 
       playerBanner.src = n.art;
       document.getElementById("artwork").src = n.art;
       document.body.style.backgroundImage = `url(${n.art})`;
 
-      playerArtist.textContent = artist;
-      playerTitle.textContent = title;
-      playerAlbum.textContent = album;
+      playerArtist.textContent = n.artist;
+      playerTitle.textContent = n.title;
+      playerAlbum.textContent = n.album || "N/A";
 
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
-          title: title,
-          artist: title,
+          title: n.title,
+          artist: n.title,
           artwork: [
             {
               src: n.art,
