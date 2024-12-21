@@ -14,14 +14,10 @@ function fetchData() {
         const extension = fileName.split("/").pop();
 
         musicData.push({
-          posterUrl: reslt.now_playing.song.art,
           imgBrand: apiUrl + "/static/uploads/" + reslt.station.shortcode + "/" + "album_art." + randomNumber + extension,
           bgimg: reslt.now_playing.song.art,
-          title: reslt.now_playing.song.title,
-          album: reslt.now_playing.song.album,
           np: reslt.now_playing.song,
           name: reslt.station.name,
-          artist: reslt.now_playing.song.artist,
           streamUrl: reslt.station.listen_url,
           api: apiUrl + "/api/nowplaying_static/" + reslt.station.shortcode + ".json",
           played_at: reslt.now_playing.played_at,
