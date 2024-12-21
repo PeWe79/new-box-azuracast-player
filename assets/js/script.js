@@ -24,10 +24,7 @@ function fetchData() {
           artist: reslt.now_playing.song.artist,
           streamUrl: reslt.station.listen_url,
           api: apiUrl + "/api/nowplaying_static/" + reslt.station.shortcode + ".json",
-          duration: reslt.now_playing.duration,
           played_at: reslt.now_playing.played_at,
-          elapsed: reslt.now_playing.elapsed,
-          remaining: reslt.now_playing.remaining,
           history: reslt.song_history,
         };
         musicData.push(apiData);
