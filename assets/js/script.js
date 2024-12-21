@@ -19,6 +19,7 @@ function fetchData() {
           bgimg: reslt.now_playing.song.art,
           title: reslt.now_playing.song.title,
           album: reslt.now_playing.song.album,
+          np: reslt.now_playing.song,
           name: reslt.station.name,
           artist: reslt.now_playing.song.artist,
           streamUrl: reslt.station.listen_url,
@@ -126,10 +127,11 @@ function processData() {
   const audioSource = new Audio(musicData[currentMusic].streamUrl);
 
   const changePlayerInfo = function () {
-    playerBanner.setAttribute("alt", `${musicData[currentMusic].title} Album Poster`);
-    playerTitle.textContent = musicData[currentMusic].title;
-    playerAlbum.textContent = musicData[currentMusic].album;
-    playerArtist.textContent = musicData[currentMusic].artist;
+    playerBanner.setAttribute("alt", `${musicData[currentMusic].np.title} Album Poster`);
+    playerTitle.textContent = musicData[currentMusic].np.title;
+    playerAlbum.textContent = musicData[currentMusic].np.album;
+    playerArtist.textContent = musicData[currentMusic].np.artist;
+    getDataSelected(musicData[currentMusic].api);
 
     audioSource.src = musicData[currentMusic].streamUrl;
     playMusic();
@@ -203,8 +205,8 @@ function processData() {
   const closeHistoryModal = document.querySelector("[close-history-modal]");
 
   histBtnEle.addEventListener("click", () => {
-    getDataSelected(musicData[currentMusic].api),
-      songListArt(musicData[currentMusic].history),
+    // getDataSelected(musicData[currentMusic].api),
+    songListArt(musicData[currentMusic].history),
       document.getElementById("historyModal").classList.remove("hidden");
   });
   closeHistoryModal.addEventListener("click", () => {
@@ -308,12 +310,13 @@ function processData() {
       title: itunes.trackName || t.title,
       artist: itunes.artistName || t.artist,
       album: itunes.collectionName || t.album,
-      art: itunes.artworkUrl100
-        ? cover(itunes.artworkUrl100.replace("100x100", "512x512"))
-        : urlCoverArt,
+      art: itunes.artworkUrl100.replace("100x100", "512x512") || urlCoverArt,
+      // art: itunes.artworkUrl100
+      //   ? cover(itunes.artworkUrl100.replace("100x100", "512x512"))
+      //   : urlCoverArt,
     };
 
-    playerBanner.src = results.art || urlCoverArt;
+    playerBanner.src = results.art;
     document.getElementById("artwork").src = results.art;
     document.body.style.backgroundImage = `url(${results.art})`;
     playerBanner.setAttribute("alt", `${results.title} Album Poster`);
@@ -407,7 +410,7 @@ function processData() {
   function getData() {
     setInterval(() => {
       getDataSelected(musicData[currentMusic].api);
-    }, 3000);
+    }, 7000);
   }
   getData();
 }
