@@ -306,31 +306,10 @@ function processData() {
       title: itunes.trackName || t.title,
       artist: itunes.artistName || t.artist,
       album: itunes.collectionName || t.album,
-      art: itunes.artworkUrl100.replace("100x100", "512x512") || urlCoverArt,
-      // art: itunes.artworkUrl100
-      //   ? cover(itunes.artworkUrl100.replace("100x100", "512x512"))
-      //   : urlCoverArt,
+      art: itunes.artworkUrl100
+        ? cover(itunes.artworkUrl100.replace("100x100", "512x512"))
+        : urlCoverArt,
     };
-
-    playerBanner.src = results.art;
-    document.getElementById("artwork").src = results.art;
-    document.body.style.backgroundImage = `url(${results.art})`;
-    playerBanner.setAttribute("alt", `${results.title} Album Poster`);
-
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: t.title,
-        artist: t.artist,
-        artwork: [
-          {
-            src: results.art,
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      });
-    }
-
     return results;
   }
 
@@ -386,17 +365,37 @@ function processData() {
       const artist = reslt.now_playing.song.artist || T.artist;
       const title = reslt.now_playing.song.title || T.title;
       const album = reslt.now_playing.song.album || T.album;
+      const np = reslt.now_playing.song;
 
       // Open spotify
       const stream = "https://open.spotify.com/search/" + encodeURIComponent(artist + " - " + title);
       document.getElementById("spotify").href = stream;
 
+      playerBanner.setAttribute("alt", `${title} Album Poster`);
       document.getElementById("title").innerHTML = title;
       document.title = artist + " - " + title;
       document.getElementById("album").innerHTML = album || "N/A";
       document.getElementById("artist").innerHTML = artist;
-      const np = reslt.now_playing.song;
-      getCoverArt(np);
+
+      const n = await getCoverArt(np);
+
+      playerBanner.src = n.art;
+      document.getElementById("artwork").src = n.art;
+      document.body.style.backgroundImage = `url(${n.art})`;
+
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: title,
+          artist: title,
+          artwork: [
+            {
+              src: n.art,
+              sizes: '512x512',
+              type: 'image/png'
+            }
+          ]
+        });
+      }
 
     } catch (e) {
       console.error("Error fetching data:", e);
