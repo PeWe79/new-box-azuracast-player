@@ -13,21 +13,19 @@ function fetchData() {
         const fileName = ".jpg";
         const extension = fileName.split("/").pop();
 
-        const apiData = {
+        musicData.push({
           posterUrl: reslt.now_playing.song.art,
           imgBrand: apiUrl + "/static/uploads/" + reslt.station.shortcode + "/" + "album_art." + randomNumber + extension,
           bgimg: reslt.now_playing.song.art,
           title: reslt.now_playing.song.title,
           album: reslt.now_playing.song.album,
           name: reslt.station.name,
-          shortcode: reslt.station.shortcode,
           artist: reslt.now_playing.song.artist,
           streamUrl: reslt.station.listen_url,
           api: apiUrl + "/api/nowplaying_static/" + reslt.station.shortcode + ".json",
           played_at: reslt.now_playing.played_at,
           history: reslt.song_history,
-        };
-        musicData.push(apiData);
+        });
       }),
         processData();
     })
