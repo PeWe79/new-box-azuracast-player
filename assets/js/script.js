@@ -116,9 +116,9 @@ function processData() {
    */
 
   const playerBanner = document.querySelector("[data-player-banner]");
-  const playerTitle = document.querySelector("[data-title]");
-  const playerAlbum = document.querySelector("[data-album]");
-  const playerArtist = document.querySelector("[data-artist]");
+  // const playerTitle = document.querySelector("[data-title]");
+  // const playerAlbum = document.querySelector("[data-album]");
+  // const playerArtist = document.querySelector("[data-artist]");
 
   const audioSource = new Audio(stationsData[currentMusic].streamUrl);
 
@@ -333,9 +333,9 @@ function processData() {
       document.getElementById("artwork").src = n.art;
       document.body.style.backgroundImage = `url(${n.art})`;
 
-      playerArtist.textContent = n.artist;
-      playerTitle.textContent = n.title;
-      playerAlbum.textContent = n.album || "N/A";
+      // playerArtist.textContent = n.artist;
+      // playerTitle.textContent = n.title;
+      // playerAlbum.textContent = n.album || "N/A";
 
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
