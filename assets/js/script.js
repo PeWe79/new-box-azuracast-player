@@ -217,7 +217,7 @@ function processData() {
 
     Array.isArray(d) && d.length > 0 ? d.forEach(async b => {
       if (!b.song.title || !b.song.artist) return;
-      const n = await getHistCoverArt(b.song, !1);
+      const n = await getCoverArt(b.song, !1);
       const frDate = b.played_at;
       const coverArt = n.art;
       const liEle = document.createElement("li");
@@ -269,85 +269,39 @@ function processData() {
    * @param {*} a = artist
    * @param {*} t = title
    * 
-   * Get Now Playing Cover art
+   * Get Cover art
    */
-  const getCoverArt = async function (t) {
-    const cover = (l, _) => l.replace(/"100x100"/, _);
-    const track = t.text;
-    const urlCoverArt = t.art;
+  const getCoverArt = async function (np) {
+    const track = np.text;
     const resp = await fetch(
       `https://itunes.apple.com/search?limit=1&term=${encodeURIComponent(track)}`
     );
 
     if (resp.status === 403)
       return {
-        title: t.title,
-        artist: t.artist,
-        album: t.album,
-        art: urlCoverArt,
+        title: np.title,
+        artist: np.artist,
+        album: np.album,
+        art: np.art,
       };
 
     const data = resp.ok ? await resp.json() : {};
     if (!data.results || data.results.length === 0)
       return {
-        title: t.title,
-        artist: t.artist,
-        album: t.album,
-        art: urlCoverArt,
+        title: np.title,
+        artist: np.artist,
+        album: np.album,
+        art: np.art,
       };
 
     const itunes = data.results[0];
     const results = {
-      title: itunes.trackName || t.title,
-      artist: itunes.artistName || t.artist,
-      album: itunes.collectionName || t.album,
+      title: itunes.trackName || np.title,
+      artist: itunes.artistName || np.artist,
+      album: itunes.collectionName || np.album,
       art: itunes.artworkUrl100
-        ? cover(itunes.artworkUrl100.replace("100x100", "512x512"))
-        : urlCoverArt,
-    };
-    return results;
-  }
-
-  /**
-   * 
-   * @param {*} t 
-   * @returns 
-   * 
-   * Get Cover Art history
-   */
-  const getHistCoverArt = async function (t) {
-    const cover = (l, _) => l.replace(/"100x100"/, _);
-    const track = t.text;
-    const urlCoverArt = t.art;
-    const resp = await fetch(
-      `https://itunes.apple.com/search?limit=1&term=${encodeURIComponent(track)}`
-    );
-
-    if (resp.status === 403)
-      return {
-        title: t.title,
-        artist: t.artist,
-        album: t.album,
-        art: urlCoverArt,
-      };
-
-    const data = resp.ok ? await resp.json() : {};
-    if (!data.results || data.results.length === 0)
-      return {
-        title: t.title,
-        artist: t.artist,
-        album: t.album,
-        art: urlCoverArt,
-      };
-
-    const itunes = data.results[0];
-    const results = {
-      title: itunes.trackName || t.title,
-      artist: itunes.artistName || t.artist,
-      album: itunes.collectionName || t.album,
-      art: itunes.artworkUrl100
-        ? cover(itunes.artworkUrl100.replace("100x100", "512x512"))
-        : urlCoverArt,
+        ? itunes.artworkUrl100.replace("100x100", "512x512")
+        : np.art,
     };
     return results;
   }
