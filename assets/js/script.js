@@ -224,8 +224,9 @@ function processData() {
       liEle.className = "py-2 flex items-center", liEle.innerHTML = `
                     ${coverArt ? `<img class="rounded-lg object-cover" src="${coverArt}" width="100" alt="${b.title} artwork">` : ""}
                     <div class="ml-3 flex-grow">
-                        <p class="text-2xl font-bold text-white text-left">${b.song.title}</p>
-                        <p class="text-medium text-gray-400 text-left">${b.song.artist}</p>
+                        <p class="text-2xl font-bold text-white text-left">${n.title}</p>
+                        <p class="text-medium text-gray-400 text-left">By: ${n.artist}</p>
+                        <p class="text-medium text-gray-400 text-left">From: ${n.album}</p>
                         <p class="text-xs text-gray-900 mt-1 text-left">${setTime(getTime(frDate))}</p>
                     </div>
                 `, songHistListEle.appendChild(liEle)
@@ -328,7 +329,7 @@ function processData() {
       document.getElementById("album").innerHTML = n.album || "N/A";
       document.getElementById("artist").innerHTML = n.artist;
 
-      playerBanner.src = n.art;
+      // playerBanner.src = n.art;
       document.getElementById("artwork").src = n.art;
       document.body.style.backgroundImage = `url(${n.art})`;
 
