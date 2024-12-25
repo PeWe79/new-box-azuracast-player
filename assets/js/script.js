@@ -1,7 +1,7 @@
 "use strict";
 
 /** All Public Station in Azuracast information */
-const musicData = [];
+const stationsData = [];
 
 /** Fetch API data from Azuracast server */
 function fetchData() {
@@ -13,7 +13,7 @@ function fetchData() {
         const fileName = ".jpg";
         const extension = fileName.split("/").pop();
 
-        musicData.push({
+        stationsData.push({
           imgBrand: apiUrl + "/static/uploads/" + reslt.station.shortcode + "/" + "album_art." + randomNumber + extension,
           bgimg: reslt.now_playing.song.art,
           np: reslt.now_playing.song,
@@ -50,15 +50,15 @@ function processData() {
     }
   }
 
-  // add all station azuracast public in playlist, from 'musicData'
+  // add all station azuracast public in playlist, from 'stationsData'
   const playlist = document.querySelector("[data-music-list]");
 
-  for (let i = 0, len = musicData.length; i < len; i++) {
+  for (let i = 0, len = stationsData.length; i < len; i++) {
     playlist.innerHTML += `
   <li>
-    <p class="label-md" id="station">${musicData[i].name}</p>
+    <p class="label-md" id="station">${stationsData[i].name}</p>
     <button class="music-item ${i === 0 ? "playing" : ""}" data-playlist-toggler data-playlist-item="${i}">
-      <img src="${musicData[i].imgBrand}" width="800" height="800" alt="${musicData[i].title} Album Poster"
+      <img src="${stationsData[i].imgBrand}" width="800" height="800" alt="${stationsData[i].title} Album Poster"
         class="img-cover">
 
       <div class="item-icon">
@@ -120,15 +120,11 @@ function processData() {
   const playerAlbum = document.querySelector("[data-album]");
   const playerArtist = document.querySelector("[data-artist]");
 
-  const audioSource = new Audio(musicData[currentMusic].streamUrl);
+  const audioSource = new Audio(stationsData[currentMusic].streamUrl);
 
   const changePlayerInfo = function () {
-    // playerBanner.setAttribute("alt", `${musicData[currentMusic].np.title} Album Poster`);
-    // playerTitle.textContent = musicData[currentMusic].np.title;
-    // playerAlbum.textContent = musicData[currentMusic].np.album;
-    // playerArtist.textContent = musicData[currentMusic].np.artist;
-    getDataSelected(musicData[currentMusic].api);
-    audioSource.src = musicData[currentMusic].streamUrl;
+    getDataSelected(stationsData[currentMusic].api);
+    audioSource.src = stationsData[currentMusic].streamUrl;
     playMusic();
   }
 
@@ -166,7 +162,7 @@ function processData() {
 
   const skipNext = function () {
     lastPlayedMusic = currentMusic;
-    currentMusic >= musicData.length - 1 ? currentMusic = 0 : currentMusic++;
+    currentMusic >= stationsData.length - 1 ? currentMusic = 0 : currentMusic++;
 
     changePlayerInfo();
     changePlaylistItem();
@@ -182,7 +178,7 @@ function processData() {
 
   const skipPrev = function () {
     lastPlayedMusic = currentMusic;
-    currentMusic <= 0 ? currentMusic = musicData.length - 1 : currentMusic--;
+    currentMusic <= 0 ? currentMusic = stationsData.length - 1 : currentMusic--;
 
     changePlayerInfo();
     changePlaylistItem();
@@ -200,8 +196,8 @@ function processData() {
   const closeHistoryModal = document.querySelector("[close-history-modal]");
 
   histBtnEle.addEventListener("click", () => {
-    // getDataSelected(musicData[currentMusic].api),
-    songListArt(musicData[currentMusic].history),
+    // getDataSelected(stationsData[currentMusic].api),
+    songListArt(stationsData[currentMusic].history),
       document.getElementById("historyModal").classList.remove("hidden");
   });
   closeHistoryModal.addEventListener("click", () => {
@@ -360,7 +356,7 @@ function processData() {
   async function getDataSelected(data) {
     try {
       const reslt = await (await fetch(data)).json();
-      const T = musicData[currentMusic];
+      const T = stationsData[currentMusic];
       const artist = reslt.now_playing.song.artist || T.artist;
       const title = reslt.now_playing.song.title || T.title;
       // const album = reslt.now_playing.song.album || T.album;
@@ -407,7 +403,7 @@ function processData() {
 
   function getData() {
     setInterval(() => {
-      getDataSelected(musicData[currentMusic].api);
+      getDataSelected(stationsData[currentMusic].api);
     }, 7000);
   }
   getData();
