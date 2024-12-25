@@ -115,7 +115,7 @@ function processData() {
    * change all visual information on player, based on current music
    */
 
-  const playerBanner = document.querySelector("[data-player-banner]");
+  // const playerBanner = document.querySelector("[data-player-banner]");
   // const playerTitle = document.querySelector("[data-title]");
   // const playerAlbum = document.querySelector("[data-album]");
   // const playerArtist = document.querySelector("[data-artist]");
@@ -323,16 +323,16 @@ function processData() {
       const stream = "https://open.spotify.com/search/" + encodeURIComponent(artist + " - " + title);
       document.getElementById("spotify").href = stream;
 
-      playerBanner.setAttribute("alt", `${n.title} Album Poster`);
-      document.getElementById("title").innerHTML = n.title;
+      // playerBanner.setAttribute("alt", `${n.title} Album Poster`);
       document.title = artist + " - " + title;
+      document.getElementById("title").innerHTML = n.title; document.title = artist + " - " + title;
       document.getElementById("album").innerHTML = n.album || "N/A";
       document.getElementById("artist").innerHTML = n.artist;
-
-      // playerBanner.src = n.art;
       document.getElementById("artwork").src = n.art;
+      document.getElementById("artwork").setAttribute("alt", `${n.title} Album Poster`);
       document.body.style.backgroundImage = `url(${n.art})`;
 
+      // playerBanner.src = n.art;
       // playerArtist.textContent = n.artist;
       // playerTitle.textContent = n.title;
       // playerAlbum.textContent = n.album || "N/A";
