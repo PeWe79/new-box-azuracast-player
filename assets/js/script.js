@@ -125,7 +125,7 @@ function processData() {
   const changePlayerInfo = function () {
     getDataSelected(stationsData[currentMusic].api);
     audioSource.src = stationsData[currentMusic].streamUrl;
-    playMusic();
+    playAudio();
   }
 
   addEventOnElements(playlistItems, "click", changePlayerInfo);
@@ -138,21 +138,23 @@ function processData() {
 
   const playBtn = document.querySelector("[data-play-btn]");
 
-  let playInterval;
-
-  const playMusic = function () {
+  const playAudio = function () {
     audioSource.volume = 1;
     if (audioSource.paused) {
       audioSource.play();
       playBtn.classList.add("active");
-    } else {
-      audioSource.pause();
-      playBtn.classList.remove("active");
-      clearInterval(playInterval);
     }
   }
 
-  playBtn.addEventListener("click", playMusic);
+  const pauseAudio = function () {
+    audioSource.pause();
+    playBtn.classList.remove("active");
+  }
+
+  playBtn !== null &&
+    playBtn.addEventListener("click", async () => {
+      audioSource.paused ? playAudio() : pauseAudio();
+    });
 
   /**
    * SKIP TO NEXT STATION
@@ -341,13 +343,13 @@ function processData() {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: n.title,
           artist: n.title,
-          artwork: [
-            {
-              src: n.art,
-              sizes: '512x512',
-              type: 'image/png'
-            }
-          ]
+          artwork: [{ src: n.art, sizes: "512x512", type: "image/png" }],
+        });
+        navigator.mediaSession.setActionHandler("play", () => {
+          playAudio();
+        });
+        navigator.mediaSession.setActionHandler("pause", () => {
+          pauseAudio();
         });
       }
 
