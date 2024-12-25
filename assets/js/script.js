@@ -62,7 +62,8 @@ function processData() {
         class="img-cover">
 
       <div class="item-icon">
-        <span class="material-symbols-rounded">equalizer</span>
+        <!-- <span class="material-symbols-rounded">equalizer</span> -->
+        <img src="./assets/images/equalizer.gif" >
       </div>
     </button>
   </li>
