@@ -322,7 +322,7 @@ function processData() {
       const T = stationsData[currentMusic];
       const artist = reslt.now_playing.song.artist || T.artist;
       const title = reslt.now_playing.song.title || T.title;
-      // const album = reslt.now_playing.song.album || T.album;
+      const album = reslt.now_playing.song.album || T.album;
       const np = reslt.now_playing.song;
 
       const n = await getCoverArt(np);
@@ -334,20 +334,20 @@ function processData() {
       document.getElementById("spotify").href = stream;
 
       document.title = artist + " - " + title;
-      document.getElementById("title").innerHTML = n.title;
+      document.getElementById("title").innerHTML = title;
       document.title = artist + " - " + title;
-      document.getElementById("album").innerHTML = n.album || "N/A";
-      document.getElementById("artist").innerHTML = n.artist;
+      document.getElementById("album").innerHTML = album || "N/A";
+      document.getElementById("artist").innerHTML = artist;
       document.getElementById("artwork").src = n.art;
       document
         .getElementById("artwork")
-        .setAttribute("alt", `${n.title} Album Poster`);
-      document.body.style.backgroundImage = `url(${n.art})`;
+        .setAttribute("alt", `${title} Album Poster`);
+      document.body.style.backgroundImage = `url(${art})`;
 
       if ("mediaSession" in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
-          title: n.title,
-          artist: n.title,
+          title: title,
+          artist: title,
           artwork: [{ src: n.art, sizes: "512x512", type: "image/png" }],
         });
         navigator.mediaSession.setActionHandler("play", () => {
